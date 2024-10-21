@@ -1,6 +1,6 @@
 CXX := g++
 PROJECT := chess
-CFLAGS := -Wall -Wextra -Werror -Wpedantic
+CFLAGS := -Wall -Wextra -Werror -Wpedantic -std=c++20
 LDFLAGS := -lSDL2
 INCLUDES := -Iinclude
 SRC_DIR := src

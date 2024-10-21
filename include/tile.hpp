@@ -1,6 +1,9 @@
 #pragma once
 
+#include "piece.hpp"
+
 #include <SDL2/SDL.h>
+#include <optional>
 
 #define TILE_SIZE 100
 
@@ -25,4 +28,6 @@ class tile_t {
     int mCol, mRow;
 
     bool mHighlighted = false;
+
+    std::optional<piece_t> mPiece = std::nullopt;
 };

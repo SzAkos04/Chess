@@ -39,16 +39,18 @@ void state_t::run() {
 
 void state_t::handleEvents() {
     SDL_Event e;
-    SDL_WaitEvent(&e);
+    // would be better but for some reason it lags
+    /* SDL_WaitEvent(&e); */
 
-    mBoard.handleEvents(e);
+    while (SDL_PollEvent(&e)) {
 
-    switch (e.type) {
-    case SDL_QUIT:
-        mRunning = false;
-        break;
-    default:
-        break;
+        mBoard.handleEvents(e);
+
+        switch (e.type) {
+        case SDL_QUIT:
+            mRunning = false;
+            break;
+        }
     }
 }
 
