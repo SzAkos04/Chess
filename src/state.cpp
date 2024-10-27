@@ -39,7 +39,7 @@ void state_t::run() {
 
 void state_t::handleEvents() {
     SDL_Event e;
-    // would be better but for some reason it lags
+    // would be more optimized but for some reason it lags
     /* SDL_WaitEvent(&e); */
 
     while (SDL_PollEvent(&e)) {

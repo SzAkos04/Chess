@@ -1,5 +1,6 @@
 #pragma once
 
+#include "piece.hpp"
 #include "tile.hpp"
 
 #include <SDL2/SDL.h>
@@ -17,4 +18,9 @@ class board_t {
 
   private:
     std::array<tile_t, 64> mTiles;
+
+    PieceColor mRound = PieceColor::WHITE;
+
+    void handleRightClick(int x, int y);
+    void handleLeftClick(int x, int y);
 };

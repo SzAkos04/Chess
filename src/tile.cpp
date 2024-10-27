@@ -24,10 +24,9 @@ tile_t::tile_t(int col, int row) {
         TILE_SIZE,
     };
     mColor = (col + row) % 2 == 0 ? TileColor::WHITE : TileColor::BLACK;
-    mCol = col, mRow = row;
+    mPos = std::pair(col, row);
 
     if (board[row][col] == ' ') {
-        mPiece.reset();
         // TODO: make this more future-proof
         return;
     }
@@ -59,7 +58,7 @@ tile_t::tile_t(int col, int row) {
         break;
     }
 
-    mPiece = piece_t(color, type, mCol, mRow);
+    mPiece.emplace(color, type, mPos.first, mPos.second);
 }
 
 tile_t::~tile_t() {}
@@ -86,8 +85,4 @@ void tile_t::render(SDL_Renderer *renderer) {
     }
 }
 
-void tile_t::handleRightClick() {
-    mHighlighted = !mHighlighted;
-    debug("Highlighted tile at " + std::to_string(mCol) + ":" +
-          std::to_string(mRow));
-}
+void tile_t::setHighlighted(bool to) { mHighlighted = to; }

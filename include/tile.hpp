@@ -4,6 +4,7 @@
 
 #include <SDL2/SDL.h>
 #include <optional>
+#include <utility>
 
 #define TILE_SIZE 100
 
@@ -19,13 +20,21 @@ class tile_t {
     ~tile_t();
 
     void render(SDL_Renderer *renderer);
-    void handleRightClick();
+
+    std::pair<int, int> getPos() { return mPos; }
+
+    bool isHighlighted() { return mHighlighted; }
+    void setHighlighted(bool to);
+
+    std::optional<piece_t> getPiece() { return mPiece; }
+    void setPiece(std::optional<piece_t> to) { mPiece = to; }
 
   private:
     SDL_Rect mRect;
     TileColor mColor;
 
-    int mCol, mRow;
+    // first is col, second is row
+    std::pair<int, int> mPos;
 
     bool mHighlighted = false;
 

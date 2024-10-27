@@ -22,11 +22,17 @@ class piece_t {
 
     void render(SDL_Renderer *renderer);
 
+    bool validMove(int col, int row);
+
+    PieceColor getColor() { return mColor; }
+    PieceType getType() { return mType; }
+
   private:
     SDL_Rect mRect;
-    SDL_Surface *image = nullptr;
 
     PieceColor mColor;
     PieceType mType;
     int mCol, mRow;
+
+    bool mHasMoved = false;
 };
