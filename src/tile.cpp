@@ -78,11 +78,15 @@ void tile_t::render(SDL_Renderer *renderer) {
         }
     }
 
+#if DEBUG
+    if (mPiece->getSelected() == true) {
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    }
+#endif
+
     SDL_RenderFillRect(renderer, &mRect);
 
     if (mPiece.has_value()) {
         mPiece->render(renderer);
     }
 }
-
-void tile_t::setHighlighted(bool to) { mHighlighted = to; }

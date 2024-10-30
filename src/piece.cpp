@@ -16,8 +16,8 @@ piece_t::piece_t(PieceColor color, PieceType type, int col, int row) {
 
     mColor = color;
     mType = type;
-    mCol = col;
-    mRow = row;
+
+    mPos = std::pair(col, row);
 }
 
 piece_t::~piece_t() {}
@@ -57,44 +57,44 @@ bool piece_t::validMove(int col, int row) {
     switch (mType) {
     case PieceType::PAWN: {
         int direction = (mColor == PieceColor::WHITE) ? -1 : 1;
-        if (col == mCol) {
-            return (row == mRow + direction) ||
-                   (!mHasMoved && row == mRow + 2 * direction);
+        if (col == mPos.first) {
+            return (row == mPos.second + direction) ||
+                   (!mMoved && row == mPos.second + 2 * direction);
         } else {
             return false;
         }
     }
     case PieceType::KNIGHT: {
-        return (row == mRow - 2 && col == mCol - 1) ||
-               (row == mRow - 2 && col == mCol + 1) ||
-               (row == mRow - 1 && col == mCol - 2) ||
-               (row == mRow - 1 && col == mCol + 2) ||
-               (row == mRow + 1 && col == mCol - 2) ||
-               (row == mRow + 1 && col == mCol + 2) ||
-               (row == mRow + 2 && col == mCol - 1) ||
-               (row == mRow + 2 && col == mCol + 1);
+        return (row == mPos.second - 2 && col == mPos.first - 1) ||
+               (row == mPos.second - 2 && col == mPos.first + 1) ||
+               (row == mPos.second - 1 && col == mPos.first - 2) ||
+               (row == mPos.second - 1 && col == mPos.first + 2) ||
+               (row == mPos.second + 1 && col == mPos.first - 2) ||
+               (row == mPos.second + 1 && col == mPos.first + 2) ||
+               (row == mPos.second + 2 && col == mPos.first - 1) ||
+               (row == mPos.second + 2 && col == mPos.first + 1);
     }
     case PieceType::BISHOP: {
-        return std::abs(row - mRow) == std::abs(col - mCol) && row != mRow &&
-               col != mCol;
+        return std::abs(row - mPos.second) == std::abs(col - mPos.first) &&
+               row != mPos.second && col != mPos.first;
     }
     case PieceType::ROOK: {
-        return (row == mRow) ^ (col == mCol);
+        return (row == mPos.second) ^ (col == mPos.first);
     }
     case PieceType::QUEEN: {
-        return (std::abs(row - mRow) == std::abs(col - mCol) && row != mRow &&
-                col != mCol) ||
-               (row == mRow) ^ (col == mCol);
+        return (std::abs(row - mPos.second) == std::abs(col - mPos.first) &&
+                row != mPos.second && col != mPos.first) ||
+               (row == mPos.second) ^ (col == mPos.first);
     }
     case PieceType::KING: {
-        return (row == mRow - 1 && col == mCol - 1) ||
-               (row == mRow - 1 && col == mCol) ||
-               (row == mRow - 1 && col == mCol + 1) ||
-               (row == mRow && col == mCol - 1) ||
-               (row == mRow && col == mCol + 1) ||
-               (row == mRow + 1 && col == mCol - 1) ||
-               (row == mRow + 1 && col == mCol) ||
-               (row == mRow + 1 && col == mCol + 1);
+        return (row == mPos.second - 1 && col == mPos.first - 1) ||
+               (row == mPos.second - 1 && col == mPos.first) ||
+               (row == mPos.second - 1 && col == mPos.first + 1) ||
+               (row == mPos.second && col == mPos.first - 1) ||
+               (row == mPos.second && col == mPos.first + 1) ||
+               (row == mPos.second + 1 && col == mPos.first - 1) ||
+               (row == mPos.second + 1 && col == mPos.first) ||
+               (row == mPos.second + 1 && col == mPos.first + 1);
     }
     default:
         throw std::runtime_error("Unknown piece type");

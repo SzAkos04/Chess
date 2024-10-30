@@ -1,6 +1,8 @@
 #pragma once
 
+#include "debug.hpp"
 #include <SDL2/SDL.h>
+#include <utility>
 
 enum class PieceColor { WHITE, BLACK };
 
@@ -27,12 +29,23 @@ class piece_t {
     PieceColor getColor() { return mColor; }
     PieceType getType() { return mType; }
 
+    std::pair<int, int> getPos() { return mPos; }
+
+    bool getMoved() { return mMoved; }
+    void setMoved(bool to) { mMoved = to; }
+
+    bool getSelected() { return mSelected; }
+    void setSelected(bool to) { mSelected = to; }
+
   private:
     SDL_Rect mRect;
 
     PieceColor mColor;
     PieceType mType;
-    int mCol, mRow;
 
-    bool mHasMoved = false;
+    // first is col, second is row
+    std::pair<int, int> mPos;
+
+    bool mMoved = false;
+    bool mSelected = false;
 };

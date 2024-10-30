@@ -23,4 +23,7 @@ class board_t {
 
     void handleRightClick(int x, int y);
     void handleLeftClick(int x, int y);
+
+    void clearHighlights();
+    void clearSelections();
 };

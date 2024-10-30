@@ -31,23 +31,27 @@ void board_t::render(SDL_Renderer *renderer) {
 }
 
 void board_t::handleRightClick(int x, int y) {
-    tile_t clicked = mTiles.at((y / TILE_SIZE) * 8 + (x / TILE_SIZE));
+    tile_t *clicked = &mTiles.at((y / TILE_SIZE) * 8 + (x / TILE_SIZE));
 
-    clicked.setHighlighted(!clicked.isHighlighted());
+    clicked->setHighlighted(!clicked->isHighlighted());
 }
 
 void board_t::handleLeftClick(int x, int y) {
-    tile_t clicked = mTiles.at((y / TILE_SIZE) * 8 + (x / TILE_SIZE));
+    tile_t *clicked = &mTiles.at((y / TILE_SIZE) * 8 + (x / TILE_SIZE));
 
-    if (clicked.getPiece().has_value()) {
-        if (clicked.getPiece().value().getColor() == mRound) {
+    clearHighlights();
+    clearSelections();
+
+    if (clicked->getPiece().has_value()) {
+        piece_t &piece = clicked->getPiece()->get();
+        if (piece.getColor() == mRound) {
             debug("Ready to move!");
+            piece.setSelected(true);
+
             for (auto &tile : mTiles) {
-                if (clicked.getPiece().value().validMove(
-                        tile.getPos().first, tile.getPos().second)) {
+                if (piece.validMove(tile.getPos().first,
+                                    tile.getPos().second)) {
                     tile.setHighlighted(true);
-                } else {
-                    tile.setHighlighted(false);
                 }
             }
         } else {
@@ -55,5 +59,31 @@ void board_t::handleLeftClick(int x, int y) {
         }
     } else {
         debug("Clicked on empty tile");
+    }
+
+    for (auto &tile : mTiles) {
+        if (tile.getPiece().has_value()) {
+            piece_t &piece = tile.getPiece()->get();
+            if (piece.getSelected()) {
+                debug("Tile (" + std::string(1, piece.getPos().first + 'A') +
+                      ":" + std::to_string(piece.getPos().second + 1) +
+                      ") selected");
+            }
+        }
+    }
+}
+
+void board_t::clearHighlights() {
+    for (auto &tile : mTiles) {
+        tile.setHighlighted(false);
+    }
+}
+
+void board_t::clearSelections() {
+    for (auto &tile : mTiles) {
+        if (tile.getPiece().has_value()) {
+            piece_t &piece = tile.getPiece()->get();
+            piece.setSelected(false);
+        }
     }
 }

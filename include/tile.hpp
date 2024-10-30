@@ -1,5 +1,6 @@
 #pragma once
 
+#include "debug.hpp"
 #include "piece.hpp"
 
 #include <SDL2/SDL.h>
@@ -24,9 +25,13 @@ class tile_t {
     std::pair<int, int> getPos() { return mPos; }
 
     bool isHighlighted() { return mHighlighted; }
-    void setHighlighted(bool to);
+    void setHighlighted(bool to) { mHighlighted = to; };
 
-    std::optional<piece_t> getPiece() { return mPiece; }
+    // idk what this is but it works
+    std::optional<std::reference_wrapper<piece_t>> getPiece() {
+        return mPiece ? std::optional<std::reference_wrapper<piece_t>>(*mPiece)
+                      : std::nullopt;
+    }
     void setPiece(std::optional<piece_t> to) { mPiece = to; }
 
   private:
